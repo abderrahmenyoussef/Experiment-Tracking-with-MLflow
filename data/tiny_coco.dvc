@@ -1,0 +1,6 @@
+outs:
+- md5: 6e8b33be2d93e49a3bdaeecb06b881ad.dir
+  size: 2212310
+  nfiles: 122
+  hash: md5
+  path: tiny_coco
