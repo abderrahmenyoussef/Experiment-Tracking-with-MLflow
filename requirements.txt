@@ -1,0 +1,16 @@
+# === Core tracking & CV ===
+mlflow>=2.10,<3.0
+ultralytics>=8.1.0,<9.0
+opencv-python>=4.8,<5.0
+numpy>=1.24,<3.0
+pandas>=2.0,<3.0
+matplotlib>=3.7,<4.0
+pillow>=10.0,<12.0
+pyyaml>=6.0.1,<7.0
+requests>=2.31,<3.0
+
+# === (Optionnel) PyTorch CPU/GPU ===
+# Pour CPU/GPU, installez torch/torchvision adaptés à votre OS/CUDA :
+#   https://pytorch.org/get-started/locally/
+# torch>=2.1,<2.4
+# torchvision>=0.16,<0.19

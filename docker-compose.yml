@@ -1,0 +1,48 @@
+services:
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:latest
+    working_dir: /mlflow
+    env_file:
+      - ./mlflow.env
+    command: >
+      mlflow server --host 0.0.0.0 --port 5000
+      --backend-store-uri sqlite:///mlflow.db
+      --artifacts-destination s3://mlflow-artifacts
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflowdata:/mlflow
+    depends_on:
+      - minio
+      - minio-mc
+
+  minio:
+    image: minio/minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio12345
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - miniodata:/data
+
+  # Init: crée le bucket "mlflow-artifacts" au démarrage (idempotent)
+  minio-mc:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: ["/bin/sh","-c"]
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio12345
+    command: |
+      mc alias set local http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD} && \
+      mc mb -p local/mlflow-artifacts || true && \
+      mc anonymous set download local/mlflow-artifacts || true
+    restart: "no"
+
+volumes:
+  mlflowdata: {}
+  miniodata: {}
