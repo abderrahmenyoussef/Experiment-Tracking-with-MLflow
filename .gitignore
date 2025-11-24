@@ -26,5 +26,10 @@ dist/
 .DS_Store
 Thumbs.db
 
+# Model weights
+*.pt
+*.pth
+*.onnx
+*.engine
 
 
